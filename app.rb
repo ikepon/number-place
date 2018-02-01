@@ -15,6 +15,12 @@ class Table
     row(row_number).count { |n| n != 0 }
   end
 
+  def row_count_hash
+    (1..9).each.with_object({}) do |n, hash|
+      hash[n] = row_count(n)
+    end
+  end
+
   def include_row?(row, number)
     row(row).include?(number)
   end
@@ -25,6 +31,12 @@ class Table
 
   def column_count(column_number)
     column(column_number).count { |n| n != 0 }
+  end
+
+  def column_count_hash
+    (1..9).each.with_object({}) do |n, hash|
+      hash[n] = column_count(n)
+    end
   end
 
   def include_column?(column, number)
@@ -48,6 +60,12 @@ class Table
 
   def square_count(square_number)
     square(square_number).count { |n| n != 0 }
+  end
+
+  def square_count_hash
+    (1..9).each.with_object({}) do |n, hash|
+      hash[n] = square_count(n)
+    end
   end
 
   def include_square?(square, number)
@@ -74,6 +92,6 @@ table = [
 
 np = Table.new(table)
 
-puts np.row_count(3)
-puts np.column_count(3)
-puts np.square_count(3)
+puts np.row_count_hash
+puts np.column_count_hash
+puts np.square_count_hash
