@@ -7,12 +7,20 @@ class Table
     @table
   end
 
-  def row(n)
-    @table[n - 1]
+  def row(row_number)
+    @table[row_number - 1]
   end
 
-  def column(n)
-    @table.transpose[n - 1]
+  def include_row?(row, number)
+    row(row).include?(number)
+  end
+
+  def column(column_number)
+    @table.transpose[column_number - 1]
+  end
+
+  def include_column?(column, number)
+    column(column).include?(number)
   end
 
   # 3x3の正方形は左上から右に
@@ -20,17 +28,26 @@ class Table
   #   4,5,6
   #   7,8,9
   # とする
-  def square(n)
-    div, mod = (n - 1).divmod(3)
+  def square(square_number)
+    div, mod = (square_number - 1).divmod(3)
 
     [
       @table[div * 3][(mod * 3)..(mod * 3 + 2)],
       @table[div * 3 + 1][(mod * 3)..(mod * 3 + 2)],
       @table[div * 3 + 2][(mod * 3)..(mod * 3 + 2)]
-    ]
+    ].flatten
+  end
+
+  def include_square?(square, number)
+    square(square).include?(number)
+  end
+
+  def solve
+
   end
 end
 
+# 例題はここのサンプルを使ってる http://www.puzzlegame.jp/gameinfo/number_place.php
 table = [
   [0, 0, 7, 0, 3, 0, 2, 0, 0],
   [0, 4, 0, 8, 2, 7, 0, 3, 0],
@@ -45,14 +62,6 @@ table = [
 
 np = Table.new(table)
 
-print np.row(1)
-print np.row(4)
-print np.row(8)
-
-print np.column(1)
-print np.column(4)
-print np.column(8)
-
-print np.square(5)
-print np.square(7)
-print np.square(9)
+puts np.include_row?(2, 2)
+puts np.include_column?(2, 3)
+puts np.include_square?(2, 1)
