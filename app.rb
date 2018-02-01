@@ -11,12 +11,20 @@ class Table
     @table[row_number - 1]
   end
 
+  def row_count(row_number)
+    row(row_number).count { |n| n != 0 }
+  end
+
   def include_row?(row, number)
     row(row).include?(number)
   end
 
   def column(column_number)
     @table.transpose[column_number - 1]
+  end
+
+  def column_count(column_number)
+    column(column_number).count { |n| n != 0 }
   end
 
   def include_column?(column, number)
@@ -36,6 +44,10 @@ class Table
       @table[div * 3 + 1][(mod * 3)..(mod * 3 + 2)],
       @table[div * 3 + 2][(mod * 3)..(mod * 3 + 2)]
     ].flatten
+  end
+
+  def square_count(square_number)
+    square(square_number).count { |n| n != 0 }
   end
 
   def include_square?(square, number)
@@ -62,6 +74,6 @@ table = [
 
 np = Table.new(table)
 
-puts np.include_row?(2, 2)
-puts np.include_column?(2, 3)
-puts np.include_square?(2, 1)
+puts np.row_count(3)
+puts np.column_count(3)
+puts np.square_count(3)
