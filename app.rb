@@ -21,6 +21,11 @@ class Table
     end
   end
 
+  def max_rows
+    max_value = row_count_hash.values.max
+    row_count_hash.select{ |_, v| v == max_value }.keys
+  end
+
   def include_row?(row, number)
     row(row).include?(number)
   end
@@ -37,6 +42,11 @@ class Table
     (1..9).each.with_object({}) do |n, hash|
       hash[n] = column_count(n)
     end
+  end
+
+  def max_columns
+    max_value = column_count_hash.values.max
+    column_count_hash.select{ |_, v| v == max_value }.keys
   end
 
   def include_column?(column, number)
@@ -68,6 +78,11 @@ class Table
     end
   end
 
+  def max_squares
+    max_value = square_count_hash.values.max
+    square_count_hash.select{ |_, v| v == max_value }.keys
+  end
+
   def include_square?(square, number)
     square(square).include?(number)
   end
@@ -91,7 +106,3 @@ table = [
 ]
 
 np = Table.new(table)
-
-puts np.row_count_hash
-puts np.column_count_hash
-puts np.square_count_hash
