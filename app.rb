@@ -143,6 +143,104 @@ class Table
           end
         end
       end
+      # 列を左から順番に見ていく
+      (1..9).each do |n|
+        # 列にない数値を出す
+        unused_number = Table::NUMBERS - column(n)
+
+        # 0 の箇所を調べる
+        column(n).each.with_index(1) do |number, index|
+          next if number != 0
+
+          # 列にない数値が当てはまるか見ていく
+          candidate_numbers = unused_number - row(index) - square(belong_square_number(index, n))
+          if candidate_numbers.length == 1
+            table[index - 1][n - 1] = candidate_numbers.join.to_i
+          end
+        end
+      end
+      # 正方形を左上から順番に見ていく
+      (1..9).each do |n|
+        # 正方形にない数値を出す
+        unused_number = Table::NUMBERS - square(n)
+
+        # あとでキレイにしたい
+        square(n).each.with_index(1) do |number, index|
+          next if number != 0
+
+          # 正方形を行単位に分ける
+          if (1..3).include?(n)
+            if (1..3).include?(index)
+              # 正方形にない数値が当てはまるか見ていく
+              column_number = index + (n - 1) * 3
+              candidate_numbers = unused_number - row(1) - column(column_number)
+              if candidate_numbers.length == 1
+                table[0][column_number - 1] = candidate_numbers.join.to_i
+              end
+            elsif (4..6).include?(index)
+              # 正方形にない数値が当てはまるか見ていく
+              column_number = index + (n - 2) * 3
+              candidate_numbers = unused_number - row(2) - column(column_number)
+              if candidate_numbers.length == 1
+                table[1][column_number - 1] = candidate_numbers.join.to_i
+              end
+            elsif (7..9).include?(index)
+              # 正方形にない数値が当てはまるか見ていく
+              column_number = index + (n - 3) * 3
+              candidate_numbers = unused_number - row(3) - column(column_number)
+              if candidate_numbers.length == 1
+                table[2][column_number - 1] = candidate_numbers.join.to_i
+              end
+            end
+          elsif (4..6).include?(n)
+            if (1..3).include?(index)
+              # 正方形にない数値が当てはまるか見ていく
+              column_number = index + (n - 4) * 3
+              candidate_numbers = unused_number - row(4) - column(column_number)
+              if candidate_numbers.length == 1
+                table[3][column_number - 1] = candidate_numbers.join.to_i
+              end
+            elsif (4..6).include?(index)
+              # 正方形にない数値が当てはまるか見ていく
+              column_number = index - 3 + (n - 4) * 3
+              candidate_numbers = unused_number - row(5) - column(column_number)
+              if candidate_numbers.length == 1
+                table[4][column_number - 1] = candidate_numbers.join.to_i
+              end
+            elsif (7..9).include?(index)
+              # 正方形にない数値が当てはまるか見ていく
+              column_number = index - 6 + (n - 4) * 3
+              candidate_numbers = unused_number - row(6) - column(column_number)
+              if candidate_numbers.length == 1
+                table[5][column_number - 1] = candidate_numbers.join.to_i
+              end
+            end
+          elsif (7..9).include?(n)
+            if (1..3).include?(index)
+              # 正方形にない数値が当てはまるか見ていく
+              column_number = index + (n - 7) * 3
+              candidate_numbers = unused_number - row(7) - column(column_number)
+              if candidate_numbers.length == 1
+                table[6][column_number - 1] = candidate_numbers.join.to_i
+              end
+            elsif (4..6).include?(index)
+              # 正方形にない数値が当てはまるか見ていく
+              column_number = index - 3 + (n - 7) * 3
+              candidate_numbers = unused_number - row(8) - column(column_number)
+              if candidate_numbers.length == 1
+                table[7][column_number - 1] = candidate_numbers.join.to_i
+              end
+            elsif (7..9).include?(index)
+              # 正方形にない数値が当てはまるか見ていく
+              column_number = index - 6 + (n - 7) * 3
+              candidate_numbers = unused_number - row(9) - column(column_number)
+              if candidate_numbers.length == 1
+                table[8][column_number - 1] = candidate_numbers.join.to_i
+              end
+            end
+          end
+        end
+      end
       puts "---#{n_time + 1}回目---"
       print table
 
@@ -156,15 +254,15 @@ end
 
 # 例題はここのサンプルを使ってる http://www.puzzlegame.jp/gameinfo/number_place.php
 table = [
-  '007030200'.split('').map(&:to_i),
-  '040827030'.split('').map(&:to_i),
-  '603000907'.split('').map(&:to_i),
-  '050704010'.split('').map(&:to_i),
-  '471080529'.split('').map(&:to_i),
-  '030201040'.split('').map(&:to_i),
-  '805000301'.split('').map(&:to_i),
-  '060519070'.split('').map(&:to_i),
-  '002060400'.split('').map(&:to_i)
+  '009008000'.split('').map(&:to_i),
+  '106090000'.split('').map(&:to_i),
+  '000010302'.split('').map(&:to_i),
+  '000570000'.split('').map(&:to_i),
+  '430000009'.split('').map(&:to_i),
+  '098003000'.split('').map(&:to_i),
+  '002000074'.split('').map(&:to_i),
+  '600000800'.split('').map(&:to_i),
+  '540000003'.split('').map(&:to_i)
 ]
 
 np = Table.new(table)
