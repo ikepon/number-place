@@ -1,3 +1,5 @@
+require 'pry'
+
 class Table
   NUMBERS = [*1..9]
   def initialize(number_table)
