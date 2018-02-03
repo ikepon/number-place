@@ -1,4 +1,5 @@
 class Table
+  NUMBERS = [*1..9]
   def initialize(number_table)
     @table = number_table
   end
@@ -87,8 +88,55 @@ class Table
     square(square).include?(number)
   end
 
-  def solve
+  # 行列番号から属している square を出す
+  # あとでキレイにしたい
+  def belong_square_number(n, m)
+    if (1..3).include?(n)
+      if (1..3).include?(m)
+        1
+      elsif (4..6).include?(m)
+        2
+      elsif (7..9).include?(m)
+        3
+      end
+    elsif (4..6).include?(n)
+      if (1..3).include?(m)
+        4
+      elsif (4..6).include?(m)
+        5
+      elsif (7..9).include?(m)
+        6
+      end
+    elsif (7..9).include?(n)
+      if (1..3).include?(m)
+        7
+      elsif (4..6).include?(m)
+        8
+      elsif (7..9).include?(m)
+        9
+      end
+    end
+  end
 
+  def solve
+    # 一番数字を持ってる行(複数)を出す
+    # puts np.max_rows
+
+    # それを順に見ていく。今は1つだけ処理
+    # その行を取り出す
+    # print row(max_rows.first)
+
+    # 行にない数値を出す
+    unused_number = Table::NUMBERS - row(max_rows.first)
+
+    # 0 の箇所を調べる
+    row(max_rows.first).each.with_index(1) do |n, index|
+      next if n != 0
+
+      # 行にない数値が当てはまるか見ていく
+      # puts unused_number - column(index)
+      puts unused_number - square(belong_square_number(max_rows.first, index))
+    end
   end
 end
 
@@ -106,3 +154,5 @@ table = [
 ]
 
 np = Table.new(table)
+
+np.solve
