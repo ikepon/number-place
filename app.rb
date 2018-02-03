@@ -10,6 +10,10 @@ class Table
     @table
   end
 
+  def complete?
+    table.flatten.count { |n| n == 0 } == 0
+  end
+
   def row(row_number)
     @table[row_number - 1]
   end
@@ -121,23 +125,31 @@ class Table
   end
 
   def solve
-    # 一番数字を持ってる行(複数)を出す
-    # puts np.max_rows
+    # 10回繰り返し、解ければ終わり、解けなければ10回までの結果をそれぞれ返す
+    10.times do |n_time|
+      # 行を上から順番に見ていく
+      (1..9).each do |n|
+        # 行にない数値を出す
+        unused_number = Table::NUMBERS - row(n)
 
-    # それを順に見ていく。今は1つだけ処理
-    # その行を取り出す
-    # print row(max_rows.first)
+        # 0 の箇所を調べる
+        row(n).each.with_index(1) do |number, index|
+          next if number != 0
 
-    # 行にない数値を出す
-    unused_number = Table::NUMBERS - row(max_rows.first)
+          # 行にない数値が当てはまるか見ていく
+          candidate_numbers = unused_number - column(index) - square(belong_square_number(n, index))
+          if candidate_numbers.length == 1
+            table[n - 1][index - 1] = candidate_numbers.join.to_i
+          end
+        end
+      end
+      puts "---#{n_time + 1}回目---"
+      print table
 
-    # 0 の箇所を調べる
-    row(max_rows.first).each.with_index(1) do |n, index|
-      next if n != 0
-
-      # 行にない数値が当てはまるか見ていく
-      # puts unused_number - column(index)
-      puts unused_number - square(belong_square_number(max_rows.first, index))
+      if complete?
+        puts "---解けたよ---"
+        break
+      end
     end
   end
 end
